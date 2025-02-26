@@ -41,7 +41,7 @@ const checkDbConnection = async (req, res) => {
 
     return res.status(500).json({
       success: false,
-      error: "Database connection failed",
+      error: "Database connection failedazsdasdc",
       reason: error.message,
       config: {
         DB_HOST: process.env.DB_HOST,
