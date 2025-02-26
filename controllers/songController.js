@@ -1,23 +1,30 @@
 const { getSongsByName } = require("../models/songModel");
 
 const searchSongs = async (req, res) => {
-  try {
-    const { name } = req.query;
-    console.log("Received request with name:", name);
+  console.log("🟢 Received request:", req.query);
 
-    if (!name) {
-      console.error("❌ Error: Song name is required");
-      return res.status(400).json({ error: "Song name is required" });
-    }
-
-    const songs = await getSongsByName(name);
-    console.log("✅ Songs fetched successfully:", songs.length);
-    
-    res.json(songs);
-  } catch (error) {
-    console.error("❌ Error fetching songs:", error);
-    res.status(500).json({ error: "Internal Server Error happing" });
+  const { name } = req.query;
+  
+  if (!name) {
+    console.warn("⚠️ Error: Song name is required");
+    return res.status(400).json({ success: false, error: "Song name is required" });
   }
+
+  // Call the database function
+  const result = await getSongsByName(name);
+
+  if (!result.success) {
+    console.error("❌ Error fetching songs:", result.error);
+    return res.status(500).json({ success: false, error: result.error });
+  }
+
+  if (result.data.length === 0) {
+    console.warn("⚠️ No songs found for:", name);
+    return res.status(404).json({ success: false, error: "No songs found" });
+  }
+
+  console.log("✅ Songs fetched successfully:", result.data.length);
+  return res.status(200).json({ success: true, data: result.data });
 };
 
 module.exports = { searchSongs };
