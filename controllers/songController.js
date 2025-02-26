@@ -16,7 +16,7 @@ const searchSongs = async (req, res) => {
     res.json(songs);
   } catch (error) {
     console.error("❌ Error fetching songs:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error happing" });
   }
 };
 
