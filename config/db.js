@@ -19,8 +19,16 @@ const pool = new Pool({
   },
 });
 
-pool.connect()
-  .then(() => console.log("✅ Database connected successfully!"))
-  .catch(err => console.error("❌ Database connection error:", err));
+// Function to check database connection
+const checkDbConnection = async (req, res) => {
+  try {
+    await pool.query("SELECT 1"); // Simple query to test DB connection
+    console.log("✅ Database connection is active");
+    return res.status(200).json({ success: true, message: "Database connected successfully" });
+  } catch (error) {
+    console.error("❌ Database connection error:", error.message);
+    return res.status(500).json({ success: false, error: "Database connection failed" });
+  }
+};
 
-module.exports = pool;
+module.exports = { pool, checkDbConnection };
