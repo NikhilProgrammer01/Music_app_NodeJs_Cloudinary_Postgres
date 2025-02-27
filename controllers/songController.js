@@ -1,17 +1,10 @@
 const { getSongsByName,getAllSongs } = require("../models/songModel");
 
 const searchSongs = async (req, res) => {
-  console.log("🟢 Received request:", req.query);
-
-  const { name } = req.query;
-  
-  if (!name) {
-    console.warn("⚠️ Error: Song name is required");
-    return res.status(400).json({ success: false, error: "Song name is required" });
-  }
+  console.log("🟢 Received request to fetch all songs");
 
   // Call the database function
-  const result = await getSongsByName(name);
+  const result = await getAllSongs();
 
   if (!result.success) {
     console.error("❌ Error fetching songs:", result.error);
@@ -19,7 +12,7 @@ const searchSongs = async (req, res) => {
   }
 
   if (result.data.length === 0) {
-    console.warn("⚠️ No songs found for:", name);
+    console.warn("⚠️ No songs found in database.");
     return res.status(404).json({ success: false, error: "No songs found" });
   }
 
