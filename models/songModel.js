@@ -37,7 +37,7 @@ const getAllSongs = async (req, res) => {
     return res.status(200).json({ success: true, data: result.rows });
   } catch (error) {
     console.error("❌ Database query error:", error.message);
-    return res.status(500).json({ success: false, error: "Database query failed", details: error.message });
+    return res.status(500).json({ success: false, error: "Database query failsdsded", details: error.message });
   } finally {
     client.release(); // ✅ Release the client
   }
