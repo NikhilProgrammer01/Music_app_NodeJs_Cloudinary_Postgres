@@ -1,36 +1,27 @@
 const pool = require("../config/db");
 
-
 const getAllSongs = async () => {
   try {
-    const query = `SELECT * FROM songs ORDER BY title ASC`;
+    const query = "SELECT * FROM songs ORDER BY title ASC";
     console.log("📢 Running query:", query);
-
-    const result = await pool.query(query); // ✅ Use pool.query instead of pool.connect
-    console.log("✅ Query executed successfully, rows returned:", result.rows.length);
+    const result = await pool.query(query);
     return { success: true, data: result.rows };
   } catch (error) {
     console.error("❌ Database query error:", error.message);
-    return { success: false, error: "Database query failed", details: error.message };
+    return { success: false, error: "Database query failed" };
   }
 };
 
-
-const getSongsByTitle = async (searchTerm) => {
+const getSongsByTitle = async (title) => {
   try {
     const query = `SELECT * FROM songs WHERE title ILIKE $1 ORDER BY title ASC`;
-    console.log("📢 Running query:", query, "with searchTerm:", searchTerm);
-
-    const result = await pool.query(query, [`${searchTerm}%`]); // Search for titles starting with `searchTerm`
-    console.log("✅ Query executed successfully, rows returned:", result.rows.length);
-    
+    console.log("📢 Searching songs with:", title);
+    const result = await pool.query(query, [`${title}%`]); // "P%" searches titles starting with P
     return { success: true, data: result.rows };
   } catch (error) {
     console.error("❌ Database query error:", error.message);
-    return { success: false, error: "Database query failed", details: error.message };
+    return { success: false, error: "Database query failed" };
   }
 };
 
-
-
-module.exports = { getAllSongs, getSongsByTitle};
+module.exports = { getAllSongs, getSongsByTitle };

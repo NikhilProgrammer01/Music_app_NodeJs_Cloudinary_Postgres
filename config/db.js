@@ -14,18 +14,10 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false, // Required for Supabase
-  },
+  ssl: { rejectUnauthorized: false }, // Required for Supabase
 });
 
-// Log database connection status
-pool.on("connect", () => {
-  console.log("✅ Connected to database");
-});
+pool.on("connect", () => console.log("✅ Connected to database"));
+pool.on("error", (err) => console.error("❌ Database error:", err));
 
-pool.on("error", (err) => {
-  console.error("❌ Database error:", err);
-});
-
-module.exports = pool; // ❗ Export only pool (not an object)
+module.exports = pool;
