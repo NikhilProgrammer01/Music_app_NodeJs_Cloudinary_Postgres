@@ -22,5 +22,19 @@ const getSongsByName = async (name) => {
     return { success: false, error: "Database query failed", details: error.message };
   }
 };
+const getAllSongs = async () => {
+  console.log("🔍 Fetching all songs from database...");
 
-module.exports = { getSongsByName };
+  try {
+    const query = "SELECT * FROM songs ORDER BY title ASC";
+    const result = await pool.query(query);
+
+    console.log("✅ Query executed successfully, rows returned:", result.rows.length);
+    return { success: true, data: result.rows };
+  } catch (error) {
+    console.error("❌ Database query error:", error.message);
+    return { success: false, error: "Database query failed", details: error.message };
+  }
+};
+
+module.exports = { getSongsByName ,getAllSongs};
