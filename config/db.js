@@ -55,4 +55,14 @@ const checkDbConnection = async (req, res) => {
 };
 
 
+// Check if pool exists before using
+pool.on("connect", () => {
+  console.log("✅ Connected to database");
+});
+
+pool.on("error", (err) => {
+  console.error("❌ Database error:", err);
+});
+
+
 module.exports = { pool, checkDbConnection };
